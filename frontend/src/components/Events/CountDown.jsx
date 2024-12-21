@@ -11,13 +11,13 @@ const CountDown = ({ data }) => {
     }, 1000);
 
     if (
-      typeof timeLeft.days === 'undefined' &&
-      typeof timeLeft.hours === 'undefined' &&
-      typeof timeLeft.minutes === 'undefined' &&
-      typeof timeLeft.seconds === 'undefined'
+      !timeLeft.hours &&
+      !timeLeft.minutes &&
+      !timeLeft.seconds
     ) {
       axios.delete(`${server}/event/delete-shop-event/${data._id}`);
     }
+
     return () => clearTimeout(timer);
   });
 
@@ -27,7 +27,6 @@ const CountDown = ({ data }) => {
 
     if (difference > 0) {
       timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
         hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
         minutes: Math.floor((difference / 1000 / 60) % 60),
         seconds: Math.floor((difference / 1000) % 60),
@@ -37,24 +36,16 @@ const CountDown = ({ data }) => {
     return timeLeft;
   }
 
-  const timerComponents = Object.keys(timeLeft).map((interval) => {
-    if (!timeLeft[interval]) {
-      return null;
-    }
-
-    return (
-      <span className="text-[25px] text-[#475ad2]">
-        {timeLeft[interval]} {interval}{" "}
-      </span>
-    );
-  });
+  const formatTime = (value) => (value < 10 ? `0${value}` : value); // Adiciona zero à esquerda se necessário
 
   return (
-    <div>
-      {timerComponents.length ? (
-        timerComponents
+    <div className="text-[25px] text-[#475ad2] font-mono">
+      {timeLeft.hours || timeLeft.minutes || timeLeft.seconds ? (
+        <>
+          {formatTime(timeLeft.hours)} : {formatTime(timeLeft.minutes)} : {formatTime(timeLeft.seconds)}
+        </>
       ) : (
-        <span className="text-[red] text-[25px]">Time's Up</span>
+        <span className="text-[red]">00 : 00 : 00</span>
       )}
     </div>
   );

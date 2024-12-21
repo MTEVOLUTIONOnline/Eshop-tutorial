@@ -39,6 +39,7 @@ const Singup = () => {
         setAvatar();
       })
       .catch((error) => {
+        console.log(error.response.data.message)
         toast.error(error.response.data.message);
       });
   };
@@ -47,7 +48,7 @@ const Singup = () => {
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Register as a new user
+          Registre-se novo usuário
         </h2>
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -58,7 +59,7 @@ const Singup = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
-                Full Name
+                Nome completo
               </label>
               <div className="mt-1">
                 <input
@@ -78,7 +79,7 @@ const Singup = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
-                Email address
+                Endereço de email
               </label>
               <div className="mt-1">
                 <input
@@ -98,7 +99,7 @@ const Singup = () => {
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
               >
-                Password
+                Senha
               </label>
               <div className="mt-1 relative">
                 <input
@@ -169,7 +170,7 @@ const Singup = () => {
               </button>
             </div>
             <div className={`${styles.noramlFlex} w-full`}>
-              <h4>Already have an account?</h4>
+              <h4>Já tem uma conta?</h4>
               <Link to="/login" className="text-blue-600 pl-2">
                 Sign In
               </Link>

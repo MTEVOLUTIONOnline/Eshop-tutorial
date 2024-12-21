@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Traduzir Página</title>
+</head>
+<body>
+  <h1>Olá, Mundo, naste!</h1>
+  <button onclick="translatePage()">Traduzir para Inglês</button>
+
+  <script>
+    function translatePage() {
+      const apiKey = 'AIzaSyCk-tAXSQI-TJCU7z-FGEY0mM26Wt6XGo'; // Substitua com sua chave de API
+      const url = 'https://translation.googleapis.com/language/translate/v2';
+      const text = document.querySelector('h1').textContent; // Texto que você quer traduzir
+
+      // Configuração da requisição POST
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          q: text,
+          target: 'en', // Idioma para o qual você quer traduzir (por exemplo, 'en' para inglês)
+          key: apiKey,
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.data && data.data.translations) {
+          // Atualizando o texto com a tradução
+          document.querySelector('h1').textContent = data.data.translations[0].translatedText;
+        } else {
+          alert('Erro ao traduzir');
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao acessar a API:', error);
+      });
+    }
+  </script>
+</body>
+</html>

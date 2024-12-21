@@ -14,16 +14,19 @@ const sendShopToken = require("../utils/shopToken");
 router.post("/create-shop", catchAsyncErrors(async (req, res, next) => {
   try {
     const { email } = req.body;
+
+    // Verificando se a loja com o email já existe
     const sellerEmail = await Shop.findOne({ email });
     if (sellerEmail) {
       return next(new ErrorHandler("User already exists", 400));
     }
 
+    // Iniciando upload do avatar da loja
     const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
       folder: "avatars",
     });
 
-
+    // Criando o objeto de loja com as informações fornecidas
     const seller = {
       name: req.body.name,
       email: email,
@@ -35,29 +38,26 @@ router.post("/create-shop", catchAsyncErrors(async (req, res, next) => {
       address: req.body.address,
       phoneNumber: req.body.phoneNumber,
       zipCode: req.body.zipCode,
+      isActive: true, // Definindo a loja como ativa diretamente
     };
 
-    const activationToken = createActivationToken(seller);
+    // Criando a loja diretamente no banco de dados sem ativação de email
+    const newShop = await Shop.create(seller);
+    console.log("Loja criada com sucesso:", newShop);
 
-    const activationUrl = `https://eshop-tutorial-pyri.vercel.app/seller/activation/${activationToken}`;
-
-    try {
-      await sendMail({
-        email: seller.email,
-        subject: "Activate your Shop",
-        message: `Hello ${seller.name}, please click on the link to activate your shop: ${activationUrl}`,
-      });
-      res.status(201).json({
-        success: true,
-        message: `please check your email:- ${seller.email} to activate your shop!`,
-      });
-    } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
-    }
+    // Respondendo ao cliente com sucesso
+    res.status(201).json({
+      success: true,
+      message: "Loja criada com sucesso e já está ativa!",
+    });
+    
   } catch (error) {
+    // Logando o erro geral na criação da loja
+    console.error("Erro ao criar loja:", error);
     return next(new ErrorHandler(error.message, 400));
   }
 }));
+
 
 // create activation token
 const createActivationToken = (seller) => {

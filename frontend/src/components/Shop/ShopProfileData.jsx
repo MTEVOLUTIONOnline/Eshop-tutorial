@@ -33,7 +33,7 @@ const ShopProfileData = ({ isOwner }) => {
                 active === 1 ? "text-red-500" : "text-[#333]"
               } cursor-pointer pr-[20px]`}
             >
-              Shop Products
+              Produtos
             </h5>
           </div>
           <div className="flex items-center" onClick={() => setActive(2)}>
@@ -42,7 +42,7 @@ const ShopProfileData = ({ isOwner }) => {
                 active === 2 ? "text-red-500" : "text-[#333]"
               } cursor-pointer pr-[20px]`}
             >
-              Running Events
+              Executando Eventos
             </h5>
           </div>
 
@@ -52,7 +52,7 @@ const ShopProfileData = ({ isOwner }) => {
                 active === 3 ? "text-red-500" : "text-[#333]"
               } cursor-pointer pr-[20px]`}
             >
-              Shop Reviews
+              Avaliações da loja
             </h5>
           </div>
         </div>
@@ -78,10 +78,13 @@ const ShopProfileData = ({ isOwner }) => {
             ))}
         </div>
       )}
+      <div>
+        <Link className="mb-5 font-bold" to="/">Voltar</Link>
+      </div>
 
       {active === 2 && (
         <div className="w-full">
-          <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
+          <div className="grid grid-cols-2 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
             {events &&
               events.map((i, index) => (
                 <ProductCard
